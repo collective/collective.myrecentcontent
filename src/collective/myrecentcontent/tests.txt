@@ -1,0 +1,61 @@
+.. -*-doctest-*-
+
+======================
+My Recent Content Menu
+======================
+
+Start with a Plone portal with collective.myrecentcontent installed.
+
+    >>> app = layer['app']
+    >>> portal = layer['portal']
+
+Open a browser and visit front page as an anonymous user.
+
+    >>> from plone.testing.z2 import Browser
+    >>> from plone.app import testing as pa_testing
+    >>> browser = Browser(app)
+    >>> browser.handleErrors = False
+    >>> browser.open(portal.absolute_url())
+
+Neither the toolbar nor the recent content menu are included.
+
+    >>> 'plone-toolbar-link' in browser.contents
+    False
+    >>> 'my-recent-content-menu' in browser.contents
+    False
+
+Log in as someone who can see the toolbar but who has taken no recent
+actions on content.
+
+    >>> browser.getLink('Log in').click()
+    >>> browser.getControl(
+    ...     name='__ac_name').value = pa_testing.SITE_OWNER_NAME
+    >>> browser.getControl(
+    ...     name='__ac_password').value = pa_testing.SITE_OWNER_PASSWORD
+    >>> browser.getControl(name='submit').click()
+    >>> print browser.contents
+    <...You are now logged in...
+
+Now the toolbar is included but the menu doesn't appear because they
+haven't acted on any content.
+
+    >>> print browser.contents
+    <...plone-toolbar-link...
+    >>> 'my-recent-content-menu' in browser.contents
+    False
+
+Edit a content object.
+
+    >>> browser.open(portal['front-page'].absolute_url()+'/edit')
+    >>> browser.getControl('Title').value = 'Foo Changed Title'
+    >>> browser.getControl('Save').click()
+    >>> print browser.contents
+    <...Changes saved...
+ 
+Now the menu is rendered with one item.
+
+    >>> print browser.contents
+    <...plone-toolbar-link...
+    >>> browser.open(portal.absolute_url()+'/@@plone_toolbar_fallback')
+    >>> print browser.contents
+    <...my-recent-content-menu...

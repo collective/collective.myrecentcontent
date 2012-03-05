@@ -3,7 +3,8 @@ import os
 
 version = '0.1'
 
-tests_require = ['plone.app.testing']
+tests_require = ['plone.app.testing',
+                 'plone.app.toolbar']
 
 setup(name='collective.myrecentcontent',
       version=version,
