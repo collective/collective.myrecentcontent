@@ -19,7 +19,7 @@ setup(name='collective.myrecentcontent',
       keywords='Plone',
       author='Ross Patterson',
       author_email='me@rpatterson.net',
-      url='http://github.com/rpatterson/collective.upgrade',
+      url='http://github.com/collective/collective.myrecentcontent',
       license='GPL',
       packages=find_packages('src', exclude=['ez_setup']),
       package_dir = {'':'src'},
@@ -33,8 +33,7 @@ setup(name='collective.myrecentcontent',
       ],
       tests_require=tests_require,
       extras_require=dict(test=tests_require),
-      test_suite = 'collective.upgrade.tests.test_suite',
-      scripts=['run-portal-upgrades'],
+      test_suite = 'collective.myrecentcontent.tests.test_suite',
       entry_points="""
       # -*- Entry points: -*-
       [z3c.autoinclude.plugin]
